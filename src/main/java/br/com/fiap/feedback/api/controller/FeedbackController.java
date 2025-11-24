@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import br.com.fiap.feedback.api.dto.ResumoSemanalResponseDTO;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -49,4 +51,11 @@ public class FeedbackController {
             @RequestParam("dataFim") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
         return ResponseEntity.ok(feedbackService.listarPorPeriodo(dataInicio, dataFim));
     }
+    
+    @GetMapping("/resumo-semanal")
+    public ResponseEntity<ResumoSemanalResponseDTO> resumoSemanal() {
+        ResumoSemanalResponseDTO resumo = feedbackService.gerarResumoSemanal();
+        return ResponseEntity.ok(resumo);
+    }
+
 }
