@@ -6,7 +6,10 @@ import br.com.fiap.feedback.domain.Feedback;
 import br.com.fiap.feedback.infrastructure.repository.FeedbackRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 @Service
 public class FeedbackService {
@@ -23,17 +26,31 @@ public class FeedbackService {
         feedback.setNota(dto.getNota());
         feedback.setUrgencia(definirUrgencia(dto.getNota()));
         feedback.setDataEnvio(LocalDateTime.now());
-
         Feedback salvo = feedbackRepository.save(feedback);
+        return converterParaDTO(salvo);
+    }
 
-        FeedbackResponseDTO resposta = new FeedbackResponseDTO();
-        resposta.setId(salvo.getId());
-        resposta.setDescricao(salvo.getDescricao());
-        resposta.setNota(salvo.getNota());
-        resposta.setUrgencia(salvo.getUrgencia());
-        resposta.setDataEnvio(salvo.getDataEnvio());
+    public List<FeedbackResponseDTO> listarTodos() {
+        return feedbackRepository.findAll()
+                .stream()
+                .map(this::converterParaDTO)
+                .toList();
+    }
 
-        return resposta;
+    public List<FeedbackResponseDTO> listarPorUrgencia(String urgencia) {
+        return feedbackRepository.findByUrgencia(urgencia)
+                .stream()
+                .map(this::converterParaDTO)
+                .toList();
+    }
+
+    public List<FeedbackResponseDTO> listarPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
+        LocalDateTime inicio = dataInicio.atStartOfDay();
+        LocalDateTime fim = dataFim.atTime(LocalTime.MAX);
+        return feedbackRepository.findByDataEnvioBetween(inicio, fim)
+                .stream()
+                .map(this::converterParaDTO)
+                .toList();
     }
 
     private String definirUrgencia(Integer nota) {
@@ -45,4 +62,15 @@ public class FeedbackService {
         }
         return "BAIXA";
     }
+
+    private FeedbackResponseDTO converterParaDTO(Feedback feedback) {
+        FeedbackResponseDTO resposta = new FeedbackResponseDTO();
+        resposta.setId(feedback.getId());
+        resposta.setDescricao(feedback.getDescricao());
+        resposta.setNota(feedback.getNota());
+        resposta.setUrgencia(feedback.getUrgencia());
+        resposta.setDataEnvio(feedback.getDataEnvio());
+        return resposta;
+    }
 }
+

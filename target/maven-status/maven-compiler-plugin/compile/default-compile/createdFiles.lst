@@ -1,0 +1,7 @@
+br/com/fiap/feedback/api/dto/FeedbackRequestDTO.class
+br/com/fiap/feedback/domain/Feedback.class
+br/com/fiap/feedback/PlataformaDeFeedbackApplication.class
+br/com/fiap/feedback/infrastructure/repository/FeedbackRepository.class
+br/com/fiap/feedback/api/controller/FeedbackController.class
+br/com/fiap/feedback/application/service/FeedbackService.class
+br/com/fiap/feedback/api/dto/FeedbackResponseDTO.class
