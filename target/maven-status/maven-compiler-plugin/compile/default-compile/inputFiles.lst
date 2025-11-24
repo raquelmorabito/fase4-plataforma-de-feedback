@@ -1,7 +1,0 @@
-/home/raquelmorabito/Área de Trabalho/fase4-plataforma-de-feedback/src/main/java/br/com/fiap/feedback/PlataformaDeFeedbackApplication.java
-/home/raquelmorabito/Área de Trabalho/fase4-plataforma-de-feedback/src/main/java/br/com/fiap/feedback/api/controller/FeedbackController.java
-/home/raquelmorabito/Área de Trabalho/fase4-plataforma-de-feedback/src/main/java/br/com/fiap/feedback/api/dto/FeedbackRequestDTO.java
-/home/raquelmorabito/Área de Trabalho/fase4-plataforma-de-feedback/src/main/java/br/com/fiap/feedback/api/dto/FeedbackResponseDTO.java
-/home/raquelmorabito/Área de Trabalho/fase4-plataforma-de-feedback/src/main/java/br/com/fiap/feedback/application/service/FeedbackService.java
-/home/raquelmorabito/Área de Trabalho/fase4-plataforma-de-feedback/src/main/java/br/com/fiap/feedback/domain/Feedback.java
-/home/raquelmorabito/Área de Trabalho/fase4-plataforma-de-feedback/src/main/java/br/com/fiap/feedback/infrastructure/repository/FeedbackRepository.java
