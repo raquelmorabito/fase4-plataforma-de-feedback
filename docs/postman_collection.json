@@ -7,6 +7,42 @@
 	},
 	"item": [
 		{
+			"name": "AWS Lambda",
+			"item": [
+				{
+					"name": "notitification-java-pure",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"feedbackId\": 1,\r\n  \"curso\": \"Java Spring Boot\",\r\n  \"aluno\": \"João da Silva\",\r\n  \"notaAvaliacao\": 5,\r\n  \"dataAvalicacao\": \"2025-12-17T14:30:00\",\r\n  \"comentario\": \"Curso excelente, conteúdo bem explicado e prático.\",\r\n \"emailDestinatario\": \"schn.alessandro@gmail.com\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://gfxs3x7yytoc3zysfgoo7rhdhy0fpczu.lambda-url.us-east-1.on.aws",
+							"protocol": "https",
+							"host": [
+								"gfxs3x7yytoc3zysfgoo7rhdhy0fpczu",
+								"lambda-url",
+								"us-east-1",
+								"on",
+								"aws"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "post avaliacao",
 			"request": {
 				"method": "POST",
@@ -21,13 +57,16 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8081/avaliacao",
-					"protocol": "http",
+					"raw": "https://api.schneider.dev.br/feedback/avaliacao",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"api",
+						"schneider",
+						"dev",
+						"br"
 					],
-					"port": "8081",
 					"path": [
+						"feedback",
 						"avaliacao"
 					]
 				}
@@ -64,6 +103,213 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "get usuarios",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}{{contextPath}}/usuarios",
+					"host": [
+						"{{host}}{{contextPath}}"
+					],
+					"path": [
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "inserir usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"// Verifica se o status da resposta é 201\r",
+							"pm.test(\"Status code é 201 - Created\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Resposta contém ID do novo recurso\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"id\");\r",
+							"});\r",
+							"\r",
+							"let response = pm.response.json();\r",
+							"pm.environment.set(\"usuarioId\", response.id);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{tokenJwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Run Teste 2\", \r\n    \"login\": \"run02\",\r\n    \"senha\": \"RunTeste@1\",\r\n    \"email\" : \"teste@teste.com\",\r\n    \"perfis\": [\"enfermeiro\",\"paciente\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/usuarios",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "test public link",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"descricao\" : \"avaliacao top\",\r\n    \"nota\" : 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/avaliacao",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"avaliacao"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login ADM",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code é 200 - OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"if (jsonData.token) {\r",
+							"    pm.collectionVariables.set(\"tokenJwt\", jsonData.token);\r",
+							"    console.log(\"Token JWT salvo com sucesso:\", jsonData.token);\r",
+							"} else {\r",
+							"    console.warn(\"Token não encontrado na resposta.\");\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"admin\",\r\n    \"password\" : \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/auth/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": ""
+		},
+		{
+			"key": "tokenJwt",
+			"value": ""
 		}
 	]
 }
