@@ -21,24 +21,35 @@ public class FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
     private final NotificationService notificationService;
+    private final AuthenticationService authenticationService;
 
-    public FeedbackService(FeedbackRepository feedbackRepository, NotificationService notificationService) {
+    public FeedbackService(FeedbackRepository feedbackRepository,
+                           NotificationService notificationService,
+                           AuthenticationService authenticationService) {
         this.feedbackRepository = feedbackRepository;
         this.notificationService = notificationService;
+        this.authenticationService = authenticationService;
     }
 
     public FeedbackResponseDTO criarFeedback(FeedbackRequestDTO dto) {
+
         FeedbackEntity feedback = new FeedbackEntity();
         feedback.setDescricao(dto.getDescricao());
         feedback.setNota(dto.getNota());
         feedback.setUrgencia(definirUrgencia(dto.getNota()));
         feedback.setDataEnvio(LocalDateTime.now());
-        feedback.setUsuario(new UsuarioEntity(1l,"usuario teste revieew avaliacao"));
+
+        feedback.setAluno( recuperarAlunoLogado() );
         FeedbackEntity feedbackEntity = feedbackRepository.save(feedback);
 
         sendNotificationToTeacherIfUrgent(feedbackEntity);
 
         return converterParaDTO(feedbackEntity);
+    }
+
+    private UsuarioEntity recuperarAlunoLogado() {
+
+        return authenticationService.getAuthenticatedUser();
     }
 
     private void sendNotificationToTeacherIfUrgent(FeedbackEntity feedback) {

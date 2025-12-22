@@ -10,6 +10,12 @@ public class FeedbackRequestDTO {
     @NotBlank
     private String descricao;
 
+    @NotBlank
+    private String disciplina;
+
+    @NotBlank
+    private Integer professor;
+
     @NotNull
     @Min(0)
     @Max(10)

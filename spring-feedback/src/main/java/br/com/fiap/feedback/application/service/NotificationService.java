@@ -17,7 +17,8 @@ public class NotificationService {
     private final AuthenticationService authenticationService;
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private final String servelessFunctionNotification = "https://gfxs3x7yytoc3zysfgoo7rhdhy0fpczu.lambda-url.us-east-1.on.aws/";
+    private final String servelessFunctionNotification
+            = "https://gfxs3x7yytoc3zysfgoo7rhdhy0fpczu.lambda-url.us-east-1.on.aws/";
 //            System.getenv( "AWS_LAMBDA_NOTIFICATION_URL");
 
     public NotificationService( AuthenticationService authenticationService) {
@@ -40,7 +41,7 @@ public class NotificationService {
 
         try {
 
-            var retorno=  restTemplate.postForObject(
+            var retorno =  restTemplate.postForObject(
                     servelessFunctionNotification,
                     requestContent,
                     String.class

@@ -138,4 +138,10 @@ public class UsuarioService {
 
         repository.save(usuario);
     }
+
+    public UsuarioEntity getUsuarioByLogin(String login) {
+        return repository.findByLogin(login).orElse(
+                 null
+        );
+    }
 }

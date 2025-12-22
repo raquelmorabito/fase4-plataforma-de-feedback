@@ -1,5 +1,6 @@
 package br.com.fiap.feedback.application.service;
 
+import br.com.fiap.gh.jpa.entities.UsuarioEntity;
 import br.com.fiap.gh.security.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,10 +14,12 @@ public class AuthenticationService {
 
     private final AuthenticationManager authManager;
     private final JwtService jwtService;
+    private final UsuarioService usuarioService;
 
-    public AuthenticationService(AuthenticationManager authManager, JwtService jwtService) {
+    public AuthenticationService(AuthenticationManager authManager, JwtService jwtService, UsuarioService usuarioService) {
         this.authManager = authManager;
         this.jwtService = jwtService;
+        this.usuarioService = usuarioService;
     }
 
     public String authenticate(String username, String password) {
@@ -46,6 +49,27 @@ public class AuthenticationService {
             // em alguns casos principal é só o nome
             return principal.toString();
         }
+    }
+
+    public UsuarioEntity getAuthenticatedUser() {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null || !auth.isAuthenticated()) {
+            return null;
+        }
+
+        Object principal = auth.getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            return usuarioService.getUsuarioByLogin( ((UserDetails) principal).getUsername() );
+        } else {
+            // em alguns casos principal é só o nome
+            if(principal != null)
+                return usuarioService.getUsuarioByLogin(principal.toString());
+        }
+
+        return null;
     }
 
     public String generateNewToken(String username) {

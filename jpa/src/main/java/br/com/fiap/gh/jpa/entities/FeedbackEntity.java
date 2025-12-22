@@ -13,26 +13,45 @@ public class FeedbackEntity implements Serializable  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String disciplina;
     private String descricao;
-
     private Integer nota;
-
-    private String urgencia;
-
+    private String urgencia; //preenchido auto conforme nota
     private LocalDateTime dataEnvio;
 
-    //TODO - falta o curso ou aula da avaliacao e quem e o professor daquela materia pra notificar
+    @ManyToOne
+    @JoinColumn(name = "usuario_aluno")
+    private UsuarioEntity aluno;// preenchido auto com usuario logado
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private UsuarioEntity usuario;
+    @JoinColumn(name = "usuario_professor")
+    private UsuarioEntity professor; //enviar id no postman
 
-    public UsuarioEntity getUsuario() {
-        return usuario;
+    public FeedbackEntity() {
     }
 
-    public void setUsuario(UsuarioEntity usuario) {
-        this.usuario = usuario;
+    public String getDisciplina() {
+        return disciplina;
+    }
+
+    public void setDisciplina(String disciplina) {
+        this.disciplina = disciplina;
+    }
+
+    public UsuarioEntity getAluno() {
+        return aluno;
+    }
+
+    public void setAluno(UsuarioEntity aluno) {
+        this.aluno = aluno;
+    }
+
+    public UsuarioEntity getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(UsuarioEntity professor) {
+        this.professor = professor;
     }
 
     public Long getId() {

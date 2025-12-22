@@ -30,7 +30,7 @@ public class FeedbackController {
     }
 
     @PostMapping
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<FeedbackResponseDTO> criar(@Valid @RequestBody FeedbackRequestDTO dto) {
         FeedbackResponseDTO resposta = feedbackService.criarFeedback(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(resposta);

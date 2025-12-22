@@ -94,7 +94,7 @@ public class NotificationHandler {
                     .parseClaimsJws(token)
                     .getBody();
 
-            System.out.println("Usuario autorizado> " +claims.getSubject());
+            System.out.println("Usuario autorizado > " +claims.getSubject());
             // token válido
 
             processJsonBody(event, context);
