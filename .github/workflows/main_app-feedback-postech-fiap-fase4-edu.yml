@@ -24,14 +24,23 @@ jobs:
           java-version: '21'
           distribution: 'microsoft'
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Build módulo jpa
+        working-directory: jpa
+        run: mvn clean install -DskipTests
 
-      - name: Upload artifact for deployment job
+      - name: Build módulo security
+        working-directory: security
+        run: mvn clean install -DskipTests
+
+      - name: Build projeto spring-feedback
+        working-directory: spring-feedback
+        run: mvn clean package -DskipTests
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.jar'
+          path: spring-feedback/target/*.jar
 
   deploy:
     runs-on: ubuntu-latest
@@ -60,4 +69,5 @@ jobs:
           app-name: 'app-feedback-postech-fiap-fase4-edu'
           slot-name: 'Production'
           package: '*.jar'
+
           
