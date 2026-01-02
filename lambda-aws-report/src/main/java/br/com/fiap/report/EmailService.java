@@ -1,4 +1,4 @@
-package br.com.fiap.notification;
+package br.com.fiap.report;
 
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
@@ -36,13 +36,11 @@ public class EmailService {
                 Message.RecipientType.TO,
                 InternetAddress.parse(dto.emailDestinatario)
         );
-        message.setSubject("Feedback Recebido - Urgente");
+        message.setSubject("Feedback urgente - Lambda Puro");
         message.setText(
-                "Disciplina: " + dto.disciplina +
-                "\nAvaliação: " + dto.notaAvaliacao +
-                "\nComentário: " + dto.comentario +
-                "\nAluno: " + dto.aluno +
-                "\nData avaliação: " + dto.dataAvalicacao
+                "Curso: " + dto.curso +
+                        "\nAvaliação: " + dto.notaAvaliacao +
+                        "\nComentário: " + dto.comentario
         );
 
         Transport.send(message);
