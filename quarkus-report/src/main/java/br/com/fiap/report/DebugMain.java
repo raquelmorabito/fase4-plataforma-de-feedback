@@ -5,13 +5,13 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 
-@ApplicationScoped
+//@ApplicationScoped
 public class DebugMain {
 
-        @Inject
-        FeedbackService feedbackService;
-
-        void onStart(@Observes StartupEvent event) {
-            feedbackService.gerarRelatorioEEnviarEmail();
-        }
+//        @Inject
+//        FeedbackService feedbackService;
+//
+//        void onStart(@Observes StartupEvent event) {
+//            feedbackService.gerarRelatorioEEnviarEmail();
+//        }
 }
