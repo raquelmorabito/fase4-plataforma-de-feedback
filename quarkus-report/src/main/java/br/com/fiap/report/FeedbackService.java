@@ -2,6 +2,7 @@ package br.com.fiap.report;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.mail.MessagingException;
 
 @ApplicationScoped
 public class FeedbackService {
@@ -16,24 +17,31 @@ public class FeedbackService {
 
         var feedbacks = repository.buscarFeedbacks();
 
-        StringBuilder relatorio = new StringBuilder();
-        relatorio.append("Relatório de Feedback\n\n");
+        for (var reportDTO : feedbacks) {
+            try {
 
-//        for (var f : feedbacks) {
-//            relatorio.append("Nota: ")
-//                    .append(f.)
-//                    .append(" - ")
-//                    .append(f.comentario)
-//                    .append("\n");
-//        }
+               var mailDTO = new MailDTO("Avaliação discplina "+reportDTO.disciplina(),
+                    montarCorpoEmail(reportDTO),reportDTO.email());
 
-//        emailService.send(
-//                Mail.withText(
-//                        "destinatario@exemplo.com",
-//                        "Relatório de Feedback",
-//                        relatorio.toString()
-//                )
-//        );
+                emailService.send(mailDTO);
+
+            } catch (MessagingException e) {
+                System.err.println(e.getMessage());
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    private String montarCorpoEmail(ReportDTO reportDTO) {
+        String corpo = "Prezado(a) "+reportDTO.nome_professor()+", <br/><br/>";
+
+        corpo += "Sua disciplina de <b>"+reportDTO.disciplina()+"</b> recebeu uma nota média de <b>"+reportDTO.media_avaliacoes()+"</b> nas avaliações!<br/>";
+
+
+        corpo += "Em breve enviaremos um resumo com os principais comentários.";
+
+        return corpo;
     }
 }
 

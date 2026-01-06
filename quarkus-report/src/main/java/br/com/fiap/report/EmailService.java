@@ -1,21 +1,28 @@
 package br.com.fiap.report;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.util.Properties;
 
 @ApplicationScoped
 public class EmailService {
 
-    private static final String environment_EMAIL_USER_NAME = System.getenv("EMAIL_USER_NAME");
-    private static final String environment_EMAIL_PASSWORD = System.getenv("EMAIL_PASSWORD");
+    @Inject
+    @ConfigProperty(name = "email.user.name")
+    String emailUserName;
+
+    @Inject
+    @ConfigProperty(name = "email.user.password")
+    String emailPassword;
 
     public void send(MailDTO dto) throws MessagingException {
 
-        System.out.println("username encontrado: "+environment_EMAIL_USER_NAME);
+//        System.out.println("EMAIL USUARIO ENCONTRADO: "+ emailUserName + "<senha>: "+ emailPassword);
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
@@ -26,8 +33,8 @@ public class EmailService {
                 new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(
-                                environment_EMAIL_USER_NAME,
-                                environment_EMAIL_PASSWORD
+                                emailUserName,
+                                emailPassword
                         );
                     }
                 });
@@ -36,12 +43,10 @@ public class EmailService {
         message.setFrom(new InternetAddress("notificacao@feedback.com"));
         message.setRecipients(
                 Message.RecipientType.TO,
-                InternetAddress.parse(dto.destinatario())
+                InternetAddress.parse(dto.emailDestinatario())
         );
         message.setSubject(dto.assunto());
-        message.setText(
-               dto.corpo()
-        );
+        message.setContent(dto.corpoHTML(), "text/html; charset=utf-8");
 
         Transport.send(message);
     }

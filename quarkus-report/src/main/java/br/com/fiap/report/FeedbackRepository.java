@@ -2,9 +2,9 @@ package br.com.fiap.report;
 
 import br.com.fiap.gh.jpa.entities.FeedbackEntity;
 import jakarta.enterprise.context.ApplicationScoped;
+import javax.sql.DataSource;
 import jakarta.inject.Inject;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,26 +17,34 @@ public class FeedbackRepository {
     @Inject
     DataSource dataSource;
 
-    public List<FeedbackEntity> buscarFeedbacks() {
+    public List<ReportDTO> buscarFeedbacks() {
 
-        List<FeedbackEntity> lista = new ArrayList<>();
+        List<ReportDTO> listaAvaliacoes = new ArrayList<>();
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(
-                     "SELECT id " +
-                             " FROM feedback");
+                     """
+                             select f.disciplina, avg(nota) as media_avaliacoes, u.email, u.nome from feedback f
+                             inner join usuario u on u.id = f.usuario_professor
+                             group by disciplina, usuario_professor
+                             
+                             """);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                FeedbackEntity f = new FeedbackEntity();
-                 rs.getLong("id");
-//                f.comentario = rs.getString("comentario");
-//                f.nota = rs.getInt("nota");
-                lista.add(f);
+
+                var dto = new ReportDTO(
+                    rs.getString("disciplina"),
+                    rs.getFloat("media_avaliacoes"),
+                    rs.getString("email"),
+                    rs.getString("nome"));
+
+                listaAvaliacoes.add(dto);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return lista;
+        System.out.println("ENCONTRADOS : "+listaAvaliacoes.size() +" FEEDBACKS");
+        return listaAvaliacoes;
     }
 }
