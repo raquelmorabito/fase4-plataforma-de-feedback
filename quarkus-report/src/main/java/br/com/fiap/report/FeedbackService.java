@@ -20,7 +20,7 @@ public class FeedbackService {
         for (var reportDTO : feedbacks) {
             try {
 
-               var mailDTO = new MailDTO("Avaliação discplina "+reportDTO.disciplina(),
+               var mailDTO = new MailDTO("Avaliação da disciplina - "+reportDTO.disciplina(),
                     montarCorpoEmail(reportDTO),reportDTO.email());
 
                 emailService.send(mailDTO);
