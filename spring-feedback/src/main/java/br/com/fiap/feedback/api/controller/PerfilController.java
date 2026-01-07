@@ -7,6 +7,7 @@ import br.com.fiap.feedback.api.dto.PerfilPermissaoInsert;
 import br.com.fiap.feedback.application.service.PerfilService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/perfis")
-//@PreAuthorize("hasRole('ADMINISTRADOR')")
+@PreAuthorize("hasRole('PERFIL')")
 public class PerfilController implements PerfilDocController {
 
     private final PerfilService service;

@@ -77,6 +77,7 @@ public class FeedbackService {
     }
 
     public List<FeedbackResponseDTO> listarPorUrgencia(String urgencia) {
+
         return feedbackRepository.findByUrgencia(urgencia)
                 .stream()
                 .map(this::converterParaDTO)
@@ -84,8 +85,10 @@ public class FeedbackService {
     }
 
     public List<FeedbackResponseDTO> listarPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
+
         LocalDateTime inicio = dataInicio.atStartOfDay();
         LocalDateTime fim = dataFim.atTime(LocalTime.MAX);
+
         return feedbackRepository.findByDataEnvioBetween(inicio, fim)
                 .stream()
                 .map(this::converterParaDTO)

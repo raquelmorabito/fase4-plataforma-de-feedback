@@ -5,6 +5,7 @@ import br.com.fiap.feedback.api.dto.*;
 import br.com.fiap.feedback.application.service.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/usuarios")
+@PreAuthorize("hasRole('USUARIO')")
 public class UsuarioController implements UsuarioDocController {
 
     private final UsuarioService service;

@@ -1,16 +1,26 @@
 package br.com.fiap.feedback.api.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDateTime;
 
 public class FeedbackResponseDTO {
 
+    @Schema(description = "Identificador único do comentário.")
     private Long id;
+    @Schema(description = "Descrição da disciplina avaliada", example = "Banco de dados")
     private String disciplina;
+    @Schema(description = "Comentário do aluno.", example = "Aula muito completa, boa didática do professor.")
     private String descricao;
+    @Schema(description = "Nota enviada.", example = "10")
     private Integer nota;
+    @Schema(description = "Classificação quanto à prioridade da avaliação.", example = "ALTA, BAIXA ou MÉDIA")
     private String urgencia;
+    @Schema(description = "Aluno que comentou.", example = "José Nilvo Nivaldo")
     private String aluno;
+    @Schema(description = "Professor avaliado.", example = "João Pedro da Cunha")
     private String professor;
+    @Schema(description = "Data do envio do comentário", example = "07/01/2025")
     private LocalDateTime dataEnvio;
 
     public Long getId() {

@@ -12,14 +12,11 @@
 				{
 					"name": "notitification-java-pure",
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"feedbackId\": 1,\r\n  \"curso\": \"Java Spring Boot\",\r\n  \"aluno\": \"João da Silva\",\r\n  \"notaAvaliacao\": 1,\r\n  \"dataAvalicacao\": \"2025-12-17T14:30:00\",\r\n  \"comentario\": \"Curso bosta.\",\r\n \"emailDestinatario\": \"schn.alessandro@gmail.com\"\r\n}\r\n",
+							"raw": "{ \r\n  \"curso\": \"Java Spring Boot\",\r\n  \"aluno\": \"João da Silva\",\r\n  \"notaAvaliacao\": 1,\r\n  \"dataAvalicacao\": \"2025-12-17T14:30:00\",\r\n  \"comentario\": \"Curso bosta.\",\r\n  \"emailDestinatario\": \"schn.alessandro@gmail.com\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -35,6 +32,40 @@
 								"us-east-1",
 								"on",
 								"aws"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "quarkus-report",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://g2gk42owshiudur53imchuqx2i0xllpw.lambda-url.us-east-1.on.aws/",
+							"protocol": "https",
+							"host": [
+								"g2gk42owshiudur53imchuqx2i0xllpw",
+								"lambda-url",
+								"us-east-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
 							]
 						}
 					},
@@ -302,9 +333,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}{{contextPath}}/perfis/{{idPerfil}}",
+							"raw": "{{host}}/perfis/{{idPerfil}}",
 							"host": [
-								"{{host}}{{contextPath}}"
+								"{{host}}"
 							],
 							"path": [
 								"perfis",
@@ -329,9 +360,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}{{contextPath}}/perfis/{{idPerfil}}",
+							"raw": "{{host}}/perfis/{{idPerfil}}",
 							"host": [
-								"{{host}}{{contextPath}}"
+								"{{host}}"
 							],
 							"path": [
 								"perfis",
@@ -377,9 +408,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}{{contextPath}}/perfis",
+							"raw": "{{host}}/perfis",
 							"host": [
-								"{{host}}{{contextPath}}"
+								"{{host}}"
 							],
 							"path": [
 								"perfis"
@@ -424,9 +455,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}{{contextPath}}/perfis/{{idPerfil}}",
+							"raw": "{{host}}/perfis/{{idPerfil}}",
 							"host": [
-								"{{host}}{{contextPath}}"
+								"{{host}}"
 							],
 							"path": [
 								"perfis",
@@ -507,7 +538,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "[\"segundo-recurso\"]",
+							"raw": "[\"usuario\"]",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -515,9 +546,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}{{contextPath}}/perfis/{{idPerfil}}/permissoes",
+							"raw": "{{host}}/perfis/{{idPerfil}}/permissoes",
 							"host": [
-								"{{host}}{{contextPath}}"
+								"{{host}}"
 							],
 							"path": [
 								"perfis",
@@ -593,6 +624,76 @@
 							],
 							"path": [
 								"avaliacao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "avaliacoes por urgencia",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/avaliacao/por-urgencia?tipo=baixa",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"avaliacao",
+								"por-urgencia"
+							],
+							"query": [
+								{
+									"key": "tipo",
+									"value": "baixa"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "avaliacoes ult. 7 dias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/avaliacao/resumo-semanal",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"avaliacao",
+								"resumo-semanal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "avaliacoes periodo determinado",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/avaliacao/por-periodo?dataInicio=2026-01-06&dataFim=2026-01-06",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"avaliacao",
+								"por-periodo"
+							],
+							"query": [
+								{
+									"key": "dataInicio",
+									"value": "2026-01-06"
+								},
+								{
+									"key": "dataFim",
+									"value": "2026-01-06"
+								}
 							]
 						}
 					},
@@ -1130,6 +1231,114 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"username\" : \"admin\",\r\n    \"password\" : \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/auth/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login PROFESSOR",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code é 200 - OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"if (jsonData.token) {\r",
+							"    pm.collectionVariables.set(\"tokenJwt\", jsonData.token);\r",
+							"    console.log(\"Token JWT salvo com sucesso:\", jsonData.token);\r",
+							"} else {\r",
+							"    console.warn(\"Token não encontrado na resposta.\");\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"professor01\",\r\n    \"password\" : \"professor01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/auth/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login ALUNO",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code é 200 - OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"if (jsonData.token) {\r",
+							"    pm.collectionVariables.set(\"tokenJwt\", jsonData.token);\r",
+							"    console.log(\"Token JWT salvo com sucesso:\", jsonData.token);\r",
+							"} else {\r",
+							"    console.warn(\"Token não encontrado na resposta.\");\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"aluno01\",\r\n    \"password\" : \"aluno01\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
