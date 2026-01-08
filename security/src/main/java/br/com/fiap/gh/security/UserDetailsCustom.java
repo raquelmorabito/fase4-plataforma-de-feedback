@@ -41,16 +41,16 @@ public class UserDetailsCustom implements UserDetails {
 
                 // Adiciona as permissões específicas, se forem true
                 if (pt.isView())
-                    authorities.add(new SimpleGrantedAuthority("VIEW_"+prefix_recurso));
+                    authorities.add(new SimpleGrantedAuthority("ROLE_VIEW_"+prefix_recurso));
 
                 if (pt.isInsert())
-                    authorities.add(new SimpleGrantedAuthority("INSERT_" + prefix_recurso));
+                    authorities.add(new SimpleGrantedAuthority("ROLE_INSERT_" + prefix_recurso));
 
                 if (pt.isUpdate())
-                    authorities.add(new SimpleGrantedAuthority("UPDATE_" + prefix_recurso));
+                    authorities.add(new SimpleGrantedAuthority("ROLE_UPDATE_" + prefix_recurso));
 
                 if (pt.isDelete())
-                    authorities.add(new SimpleGrantedAuthority("DELETE_" + prefix_recurso));
+                    authorities.add(new SimpleGrantedAuthority("ROLE_DELETE_" + prefix_recurso));
             }
         }
 

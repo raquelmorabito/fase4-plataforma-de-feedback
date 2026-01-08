@@ -24,7 +24,8 @@ public class FeedbackRepository {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(
                      """
-                             select f.disciplina, avg(nota) as media_avaliacoes, u.email, u.nome from feedback f
+                             select f.disciplina, avg(nota) as media_avaliacoes, u.email, u.nome, u.id as professor_id 
+                             from feedback f
                              inner join usuario u on u.id = f.usuario_professor
                              group by disciplina, usuario_professor
                              
@@ -37,7 +38,8 @@ public class FeedbackRepository {
                     rs.getString("disciplina"),
                     rs.getFloat("media_avaliacoes"),
                     rs.getString("email"),
-                    rs.getString("nome"));
+                    rs.getString("nome"),
+                    rs.getLong("professor_id"));
 
                 listaAvaliacoes.add(dto);
             }
@@ -46,5 +48,27 @@ public class FeedbackRepository {
         }
         System.out.println("ENCONTRADOS : "+listaAvaliacoes.size() +" FEEDBACKS");
         return listaAvaliacoes;
+    }
+
+    public List<String> buscarTodosComentarios(String disciplina, Long professor_id) {
+
+        List<String> comentarios = new ArrayList<>();
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                     "select descricao as comentario from feedback where disciplina like '"+disciplina+"'"
+                     +" and usuario_professor = "+professor_id);
+
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                comentarios.add(rs.getString("comentario"));
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return comentarios;
     }
 }

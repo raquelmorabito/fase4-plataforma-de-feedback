@@ -1,22 +1,19 @@
 package br.com.fiap.report;
-
 import br.com.fiap.report.service.FeedbackService;
-import io.quarkus.arc.profile.IfBuildProfile;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.annotation.PostConstruct;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
 
-@IfBuildProfile("dev")
-@ApplicationScoped
+@Path("/send")
 public class LocalRunner {
 
     @Inject
     FeedbackService feedbackService;
 
-    @PostConstruct
-    void run() {
-        System.out.println("Executando runner local...");
+    @GET
+    public String test() {
         feedbackService.gerarRelatorioEEnviarEmail();
-        System.out.println("Execução local finalizada.");
+        return "OK";
     }
 }
+

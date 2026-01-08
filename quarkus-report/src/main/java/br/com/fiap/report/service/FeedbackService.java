@@ -7,6 +7,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.mail.MessagingException;
 
+import java.util.List;
+
 @ApplicationScoped
 public class FeedbackService {
 
@@ -16,6 +18,9 @@ public class FeedbackService {
     @Inject
     EmailService emailService;
 
+    @Inject
+    GeminiService geminiService;
+
     public void gerarRelatorioEEnviarEmail() {
 
         var feedbacks = repository.buscarFeedbacks();
@@ -23,8 +28,11 @@ public class FeedbackService {
         for (var reportDTO : feedbacks) {
             try {
 
+                List<String> comentarios = repository.buscarTodosComentarios(reportDTO.disciplina(), reportDTO.professor_id());
+                String resumo = geminiService.resumirComentarios(comentarios);
+
                var mailDTO = new MailDTO("Avaliação da disciplina - "+reportDTO.disciplina(),
-                    montarCorpoEmail(reportDTO),reportDTO.email());
+                    montarCorpoEmail(reportDTO, resumo), reportDTO.email());
 
                 emailService.send(mailDTO);
 
@@ -36,11 +44,12 @@ public class FeedbackService {
 
     }
 
-    private String montarCorpoEmail(ReportDTO reportDTO) {
+    private String montarCorpoEmail(ReportDTO reportDTO, String resumo) {
         String corpo = "Prezado(a) "+reportDTO.nome_professor()+", <br/><br/>";
 
         corpo += "Sua disciplina de <b>"+reportDTO.disciplina()+"</b> recebeu uma nota média de <b>"+reportDTO.media_avaliacoes()+"</b> nas avaliações!<br/>";
 
+        corpo += "Resumo dos comentários: <b>"+resumo+"</b>.<br/>";
 
         corpo += "Em breve enviaremos um resumo com os principais comentários.";
 
